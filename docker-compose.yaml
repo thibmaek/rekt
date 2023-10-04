@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  rekt:
+    build: .
+    container_name: rekt
+    volumes:
+      - ./scan:/scan
+    command: "/entrypoint.sh /scan/app.apk"
