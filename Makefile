@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := build
 
-REKT_CLI_VERSION=1.0.0
+REKT_CLI_VERSION=1.0.0-alpha
 LDFLAGS="-X 'main.Version=$(REKT_CLI_VERSION)'"
 
 build_cli:
