@@ -39,7 +39,7 @@ func (cmd *ProbeCmd) Name() string {
 	return cmd.name
 }
 
-func (cmd *ProbeCmd) Run() string {
+func (cmd *ProbeCmd) Run() any {
 	if cmd.verbose {
 		PrintAscii()
 	}
@@ -55,5 +55,5 @@ func (cmd *ProbeCmd) Run() string {
   `, bundleId, mainApplication, appType)
 	fmt.Println()
 
-	return ""
+	return nil
 }

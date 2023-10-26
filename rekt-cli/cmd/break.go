@@ -42,7 +42,7 @@ func (cmd *BreakCmd) Name() string {
 	return cmd.name
 }
 
-func (cmd *BreakCmd) Run() string {
+func (cmd *BreakCmd) Run() any {
 	if cmd.inputDir == "" {
 		fmt.Println("No input directory passed!\nPass the input directory with the -inputDir flag.")
 		os.Exit(1)
@@ -62,5 +62,5 @@ func (cmd *BreakCmd) Run() string {
 	android.CheckAirshipConfig(assetsDir)
 	rn.ScanReactNativeBundle(path.Join(assetsDir, "index.android.js"))
 
-	return ""
+	return nil
 }

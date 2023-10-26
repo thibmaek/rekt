@@ -45,7 +45,7 @@ func (cmd *DecompileCmd) Name() string {
 }
 
 // Decompiles the app and returns the output directory
-func (cmd *DecompileCmd) Run() string {
+func (cmd *DecompileCmd) Run() any {
 	if cmd.inputApk == "" {
 		fmt.Println("APK must be passed: rekt decompile -apk=<path-to-apk>")
 		os.Exit(1)
@@ -68,6 +68,7 @@ func (cmd *DecompileCmd) Run() string {
 	decompileRN(assetDir)
 
 	fmt.Println("Decompiled app. Output directory:", outDir)
+
 	return outDir
 }
 

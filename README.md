@@ -1,5 +1,23 @@
 # Rekt
 
+```plaintext
+=====================================================
+                 __  __     __
+ _ __     __    /\ \/  \   /\ \__
+/\` __\ / ,.`\  \ \    <   \ \ ,_\
+\ \ \/ /\  __/   \ \  ^  \  \ \ \/
+ \ \_\ \ \____\   \ \_\ \_\  \ \ \_
+  \/_/  \/____/    \/_/\/_/   \ \__\
+                               \/__/
+=====================================================
+```
+
+## Install
+
+How to get rekt:
+
+-
+
 ## Usage
 
 ### Docker
@@ -8,7 +26,7 @@ Pull the image and bindmount a volume `scan` containing the APK:
 
 ```console
 $ docker pull @thibmaek/rekt
-$ docker run -v $(pwd)/scan:/scan @thibmaek/rekt <apk>
+$ docker run -it --rm -v $(pwd)/scan:/scan @thibmaek/rekt <apk>
 ```
 
 ### CLI

@@ -10,7 +10,7 @@ var Version string
 
 type Command interface {
 	Name() string
-	Run() string
+	Run() any
 }
 
 func main() {
