@@ -1,7 +1,7 @@
 # Build rekt-cli binary
 FROM golang:1.21 AS builder
 
-ARG REKT_CLI_VERSION=1.0.0-alpha
+ARG REKT_CLI_VERSION=1.1.0-alpha
 
 WORKDIR /build
 COPY rekt-cli .
