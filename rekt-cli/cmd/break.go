@@ -52,11 +52,11 @@ func (cmd *BreakCmd) Run() any {
 		PrintAscii()
 	}
 
-	_, mainApplication := analysis.GetBundleId(cmd.inputDir)
+	_, extras := analysis.GetAndroidBundleId(cmd.inputDir)
 	assetsDir := path.Join(cmd.inputDir, "resources/assets")
 	sourcesDir := path.Join(cmd.inputDir, "sources")
 
-	android.CheckBuildConfig(sourcesDir, mainApplication)
+	android.CheckBuildConfig(sourcesDir, extras.MainApplication)
 	android.CheckPrivateKeys(assetsDir)
 	android.CheckAppCenterConfig(assetsDir)
 	android.CheckAirshipConfig(assetsDir)

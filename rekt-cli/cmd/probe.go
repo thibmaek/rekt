@@ -24,7 +24,7 @@ func NewProbeCommand(flags []string) *ProbeCmd {
 
 	fs := flag.NewFlagSet(cmd.name, flag.ExitOnError)
 	fs.BoolVar(&cmd.verbose, "verbose", false, "Verbose output")
-	fs.StringVar(&cmd.inputDir, "inputDir", "", "Input directory to probe. The output directory of a decompiled APK")
+	fs.StringVar(&cmd.inputDir, "inputDir", "", "Input directory to probe. The output directory of a decompiled app archive")
 
 	err := fs.Parse(flags)
 	if err != nil {
@@ -39,21 +39,39 @@ func (cmd *ProbeCmd) Name() string {
 	return cmd.name
 }
 
+func (cmd *ProbeCmd) ArchiveType() string {
+	isIOS, _ := analysis.IsIOSApp(cmd.inputDir)
+	if isIOS {
+		return "ios"
+	}
+	return "android"
+}
+
 func (cmd *ProbeCmd) Run() any {
 	if cmd.verbose {
 		PrintAscii()
 	}
 
 	appType := analysis.GetAppType(cmd.inputDir)
-	bundleId, mainApplication := analysis.GetBundleId(cmd.inputDir)
+	id, extras := analysis.GetBundleId(cmd.inputDir)
 
-	fmt.Println()
-	fmt.Printf(`Analysis details:
-  - Bundle ID: %s
-  - MainApplication name: %s
-  - App type: %s
-  `, bundleId, mainApplication, appType)
-	fmt.Println()
+	if cmd.ArchiveType() == "android" {
+		fmt.Println()
+		fmt.Printf(`Analysis details:
+		- Bundle ID: %s
+		- MainApplication name: %s
+		- App type: %s
+		`, id, extras.MainApplication, appType)
+		fmt.Println()
+	} else {
+		fmt.Println()
+		fmt.Printf(`Analysis details:
+		- Bundle ID: %s
+		- App type: %s
+		- App version: %s
+		`, id, appType, extras.AppVersion)
+		fmt.Println()
+	}
 
 	return nil
 }
