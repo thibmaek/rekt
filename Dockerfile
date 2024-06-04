@@ -1,5 +1,5 @@
 # Build rekt-cli binary
-FROM golang:1.21 AS builder
+FROM golang:1.22 AS builder
 
 ARG REKT_CLI_VERSION=1.1.0-alpha
 
@@ -11,7 +11,7 @@ RUN go build -ldflags="-X 'main.Version=${REKT_CLI_VERSION}'" -o rekt .
 # Install jadx & hermes toolchain
 FROM openjdk:8-jre-slim
 
-LABEL description="Rekt is app rekking tool for Android APKs"
+LABEL description="Rekt is app rekking tool for mobile applications"
 LABEL repository="https://github.com/thibmaek/rekt"
 LABEL maintainer="thibmaek"
 
