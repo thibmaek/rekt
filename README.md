@@ -12,11 +12,19 @@
 =====================================================
 ```
 
+## Prereqs
+
+If running outside of Docker (e.g locally) you will need the following installed:
+- jadx (Java)
+- hermes-desc (Python)
+
 ## Install
 
 How to get rekt:
 
--
+- Use the binary in the `./rekt-cli/bin` folder
+- Download from Github releases
+- Build it yourself
 
 ## Usage
 
