@@ -15,6 +15,11 @@ import (
 // Asserts if a decompiled directory is an iOS one by checking if there is any plist file
 func IsIOSApp(dir string) (ok bool, appName string) {
 	file, ok := utils.HasFile(fmt.Sprintf("%s/Payload/**/*.plist", dir))
+
+	if !ok {
+		return ok, ""
+	}
+
 	re := regexp.MustCompile(`Payload/(.*?)/`)
 	matched := re.FindStringSubmatch(file[0])
 	return ok, matched[1]
