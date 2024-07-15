@@ -41,16 +41,16 @@ Pull the image and bindmount a volume `scan` containing your archive:
 
 ```console
 $ docker pull @thibmaek/rekt
-$ docker run -it --rm -v $(pwd)/scan:/scan @thibmaek/rekt <archive_file>
+$ docker run -it --rm -v $(pwd)/scan:/scan @thibmaek/rekt /scan/com.my_app.apk
 ```
 
 ### CLI
 
 A typical run of rekt using the cli involves running:
 
-1. Decompile - Getting plain readable files
-2. Probe - Gathering info about the decompiled app
-3. Break - Finding secrets and credential files
+1. **Decompile** - Getting plain readable files
+2. **Probe** - Gathering info about the decompiled app
+3. **Break** - Finding secrets and credential files
 
 Given an APK `com.my_app.apk` you'd get the results like this:
 
@@ -62,7 +62,7 @@ $ rekt break -outputDir-./scan/com_my_app
 
 #### Decompile
 
-```shell
+```console
 # Decompiling an APK
 $ rekt decompile -archive=./com.my_app.apk
 
@@ -78,17 +78,11 @@ $ rekt decompile -archive=./com.my_app.apk -outputDir=./decompiled_app
 
 #### Probe
 
-> [!WARNING]
-> Probing is currently not supported on iOS
-
 ```console
 $ rekt probe -inputDir=./scan/com_my_app
 ```
 
 #### Break
-
-> [!WARNING]
-> Breaking is currently not supported on iOS
 
 ```console
 $ rekt break -inputDir=./scan/com_my_app
@@ -97,6 +91,9 @@ $ rekt break -inputDir=./scan/com_my_app
 ## Building
 
 ```console
+# Install local dependencies
+$ make dependencies
+
 # Build Docker & Go
 $ make build
 
@@ -109,7 +106,6 @@ $ make build_cli
 
 ## Todos
 
-- Support for iOS IPA archives
 - Gitlab CI support
 - Github Actions support
 - Azure Devops support
