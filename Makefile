@@ -1,7 +1,12 @@
 .DEFAULT_GOAL := build
 
-REKT_CLI_VERSION=1.0.0-alpha
+REKT_CLI_VERSION=1.1.0-alpha
 LDFLAGS="-X 'main.Version=$(REKT_CLI_VERSION)'"
+
+dependencies:
+	asdf install
+	brew install jadx
+	pip install --upgrade git+https://github.com/P1sec/hermes-dec
 
 build_cli:
 	cd rekt-cli && \

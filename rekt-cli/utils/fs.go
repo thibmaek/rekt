@@ -1,11 +1,13 @@
 package utils
 
 import (
+	"archive/zip"
 	"bufio"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -90,4 +92,40 @@ func FindInFile(filepath string, rgx *regexp.Regexp, excludes *regexp.Regexp, bu
 	}
 
 	return foundMatch, matchingLines.String()
+}
+
+func Unzip(filepath string, dest string) {
+	r, err := zip.OpenReader(filepath)
+	if err != nil {
+		log.Fatalf("Failed to open zip reader: %s", err)
+	}
+	defer r.Close()
+
+	for k, f := range r.File {
+		fmt.Printf("Unzipping %s:\n", f.Name)
+		rc, err := f.Open()
+		if err != nil {
+			log.Fatalf("Failed to open file n°%d in archive: %s", k, err)
+		}
+		defer rc.Close()
+
+		newFilePath := path.Join(dest, f.Name)
+
+		if f.FileInfo().IsDir() {
+			err = os.MkdirAll(newFilePath, 0777)
+			if err != nil {
+				log.Fatalf("Failed to create extraction directory: %s", err)
+			}
+			continue
+		}
+
+		uncompressedFile, err := os.Create(newFilePath)
+		if err != nil {
+			log.Fatalf("Failed to create extracted file: %s", err)
+		}
+		_, err = io.Copy(uncompressedFile, rc)
+		if err != nil {
+			log.Fatalf("Failed to copy file n°%d: %s", k, err)
+		}
+	}
 }

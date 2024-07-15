@@ -12,35 +12,50 @@
 =====================================================
 ```
 
+## Prereqs
+
+If running outside of Docker (e.g locally) you will need the following installed:
+- jadx (Java)
+- hermes-desc (Python)
+
 ## Install
 
 How to get rekt:
 
--
+- Use the binary in the `./rekt-cli/bin` folder
+- Download from Github releases
+- Build it yourself
 
 ## Usage
 
+Rekt decompiles, analyzes and breaks application archives. A valid app archive file is needed for either of these platforms:
+
+- iOS: iOS Package App Store (IPA, `.ipa`)
+- Android: Android Package Kit (APK, `.apk`)
+
+Both of these archives are essentialy glorified ZIP archives that you can also unpack manually.
+
 ### Docker
 
-Pull the image and bindmount a volume `scan` containing the APK:
+Pull the image and bindmount a volume `scan` containing your archive:
 
 ```console
 $ docker pull @thibmaek/rekt
-$ docker run -it --rm -v $(pwd)/scan:/scan @thibmaek/rekt <apk>
+$ docker run -it --rm -v $(pwd)/scan:/scan @thibmaek/rekt /scan/com.my_app.apk
 ```
 
 ### CLI
 
 A typical run of rekt using the cli involves running:
 
-1. Decompile - Getting plain readable files
-2. Probe - Gathering info about the decompiled app
-3. Break - Finding secrets and credential files
+1. **Decompile** - Getting plain readable files
+2. **Probe** - Gathering info about the decompiled app
+3. **Break** - Finding secrets and credential files
 
 Given an APK `com.my_app.apk` you'd get the results like this:
 
 ```console
-$ rekt decompile -apk=./com.my_app.apk
+$ rekt decompile -archive=./com.my_app.apk
 $ rekt probe -outputDir=./scan/com_my_app
 $ rekt break -outputDir-./scan/com_my_app
 ```
@@ -48,13 +63,17 @@ $ rekt break -outputDir-./scan/com_my_app
 #### Decompile
 
 ```console
-$ rekt decompile -apk=./com.my_app.apk
+# Decompiling an APK
+$ rekt decompile -archive=./com.my_app.apk
+
+# Decompiling an IPA
+$ rekt decompile -archive=./com.my_app.ipa
 ```
 
 Optionally provide an output directory `-outputdir`. Defaults to `./scan/<bundle_id>`
 
 ```console
-$ rekt decompile -apk=./com.my_app.apk -outputDir=./decompiled_app
+$ rekt decompile -archive=./com.my_app.apk -outputDir=./decompiled_app
 ```
 
 #### Probe
@@ -72,6 +91,9 @@ $ rekt break -inputDir=./scan/com_my_app
 ## Building
 
 ```console
+# Install local dependencies
+$ make dependencies
+
 # Build Docker & Go
 $ make build
 
@@ -84,7 +106,6 @@ $ make build_cli
 
 ## Todos
 
-- Support for iOS IPA archives
 - Gitlab CI support
 - Github Actions support
 - Azure Devops support

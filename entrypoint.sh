@@ -14,6 +14,6 @@ if [ -d "./scan/app" ]; then
   rm -rf ./scan/app
 fi
 
-rekt decompile -apk="$1" -outputDir="./scan/app"
-rekt probe -inputDir="./scan/app"
-rekt break -inputDir="./scan/app"
+rekt decompile --archive="$1" --outputDir="./scan/app"
+rekt probe --inputDir="./scan/app"
+rekt break --inputDir="./scan/app"
