@@ -15,9 +15,9 @@ func CheckBuildConfig(sourcesDir string, bundleId string) {
 	fmt.Println("Scanning BuildConfig.java...")
 	_, ok := utils.HasFile(cfgPath)
 	if ok {
-		keywords := regexp.MustCompile(`(?i)(token|secret|apikey|api_key|client_secret|clientsecret|credential|password|license_key|licensekey|access_key|accesskey|private_key|privatekey)`)
+		keywords := regexp.MustCompile(`(?i)(token|secret|apikey|clientsecret|credential|password|licensekey|accesskey|privatekey|.*_secret$|.*_key$|.*_signing$|.*_signing_.*)`)
 		if ok, matches := utils.FindInFile(cfgPath, keywords, nil, nil); ok {
-			fmt.Println("🚨 Found BuildConfig.java containing a secret:", cfgPath)
+			fmt.Println("🚨 Found possible secret value in BuildConfig.java:", cfgPath)
 			fmt.Println(matches)
 		} else {
 			fmt.Println("✅ BuildConfig.java looks OK")
