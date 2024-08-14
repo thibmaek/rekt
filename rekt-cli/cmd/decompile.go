@@ -113,7 +113,6 @@ func decompileRN(assetDir string, platform string) {
 	} else if platform == "android" {
 		reactNativeBundle = path.Join(assetDir, fmt.Sprintf("%s.bundle", bundleSuffix))
 	}
-	fmt.Println(reactNativeBundle)
 
 	_, ok := utils.HasFile(reactNativeBundle)
 	if ok {
