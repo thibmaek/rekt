@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
-	analysis "rekt/analysis"
+	"rekt/analysis"
 	"rekt/android"
 	"rekt/rn"
 )
@@ -42,6 +42,10 @@ func (cmd *BreakCmd) Name() string {
 	return cmd.name
 }
 
+func (cmd *BreakCmd) ArchiveType() string {
+	return analysis.GetArchiveType(cmd.inputDir)
+}
+
 func (cmd *BreakCmd) Run() any {
 	if cmd.inputDir == "" {
 		fmt.Println("No input directory passed!\nPass the input directory with the -inputDir flag.")
@@ -52,15 +56,28 @@ func (cmd *BreakCmd) Run() any {
 		PrintAscii()
 	}
 
-	_, extras := analysis.GetAndroidBundleId(cmd.inputDir)
 	assetsDir := path.Join(cmd.inputDir, "resources/assets")
 	sourcesDir := path.Join(cmd.inputDir, "sources")
 
-	android.CheckBuildConfig(sourcesDir, extras.MainApplication)
-	android.CheckPrivateKeys(assetsDir)
-	android.CheckAppCenterConfig(assetsDir)
-	android.CheckAirshipConfig(assetsDir)
-	rn.ScanReactNativeBundle(path.Join(assetsDir, "index.android.js"))
+	if cmd.ArchiveType() == "android" {
+		_, extras := analysis.GetAndroidBundleId(cmd.inputDir)
+
+		android.CheckBuildConfig(sourcesDir, extras.MainApplication)
+		android.CheckPrivateKeys(assetsDir)
+		android.CheckAppCenterConfig(assetsDir)
+		android.CheckAirshipConfig(assetsDir)
+	} else {
+		fmt.Println("Break is not yet supported on iOS")
+		return nil
+	}
+
+	if rn.IsRNApp(cmd.inputDir) {
+		if cmd.ArchiveType() == "android" {
+			rn.ScanReactNativeBundle(path.Join(assetsDir, "index.android.js"))
+		} else {
+			rn.ScanReactNativeBundle(path.Join(assetsDir, "index.ios.js"))
+		}
+	}
 
 	return nil
 }

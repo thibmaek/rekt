@@ -40,11 +40,7 @@ func (cmd *ProbeCmd) Name() string {
 }
 
 func (cmd *ProbeCmd) ArchiveType() string {
-	isIOS, _ := analysis.IsIOSApp(cmd.inputDir)
-	if isIOS {
-		return "ios"
-	}
-	return "android"
+	return analysis.GetArchiveType(cmd.inputDir)
 }
 
 func (cmd *ProbeCmd) Run() any {
