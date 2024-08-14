@@ -4,7 +4,14 @@ import (
 	"fmt"
 	"regexp"
 	"rekt/utils"
+	"strings"
 )
+
+func IsRNApp(dir string) bool {
+	_, okAndroid := utils.HasFile(strings.Join([]string{dir, "resources/lib/**/libhermes.so"}, "/"))
+	_, okIOS := utils.HasFile(strings.Join([]string{dir, "Payload/**/Frameworks/hermes.framework"}, "/"))
+	return okAndroid || okIOS
+}
 
 func ScanReactNativeBundle(bundlePath string) {
 	fmt.Println("Scanning the React Native bundle...")

@@ -1,38 +1,34 @@
 package analysis
 
 import (
-	"rekt/utils"
-	"strings"
+	"rekt/flutter"
+	"rekt/nativescript"
+	"rekt/rn"
+	"rekt/xamarin"
 )
 
-func isFlutterApp(dir string) bool {
-	_, okAndroid := utils.HasFile(strings.Join([]string{dir, "resources/lib/**/flutter.so"}, "/"))
-	_, okIOS := utils.HasFile(strings.Join([]string{dir, "Payload/**/Frameworks/Flutter.framework"}, "/"))
-	return okAndroid || okIOS
-}
-
-func isRNApp(dir string) bool {
-	_, okAndroid := utils.HasFile(strings.Join([]string{dir, "resources/lib/**/libhermes.so"}, "/"))
-	_, okIOS := utils.HasFile(strings.Join([]string{dir, "Payload/**/Frameworks/hermes.framework"}, "/"))
-	return okAndroid || okIOS
-}
-
-func isNativeScriptApp(dir string) bool {
-	_, ok := utils.HasFile(strings.Join([]string{dir, "resources/lib/**/libNativeScript.so"}, "/"))
-	return ok
-}
-
 func GetAppType(dir string) string {
-	if isRNApp(dir) {
+	if rn.IsRNApp(dir) {
 		return "React Native"
 	}
-	if isNativeScriptApp(dir) {
-		return "NativeScript"
-	}
-	if isFlutterApp(dir) {
+	if flutter.IsFlutterApp(dir) {
 		return "Flutter"
 	}
+	if xamarin.IsXamarinApp(dir) {
+		return "Xamarin"
+	}
+	if nativescript.IsNativeScriptApp(dir) {
+		return "NativeScript"
+	}
 	return "Android Native (Java / Kotlin)"
+}
+
+func GetArchiveType(dir string) string {
+	isIOS, _ := IsIOSApp(dir)
+	if isIOS {
+		return "ios"
+	}
+	return "android"
 }
 
 type BundleExtras struct {
