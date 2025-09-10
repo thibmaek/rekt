@@ -5,6 +5,7 @@ import (
 	"rekt/nativescript"
 	"rekt/rn"
 	"rekt/xamarin"
+	"rekt/capacitor"
 )
 
 func GetAppType(dir string) string {
@@ -13,6 +14,9 @@ func GetAppType(dir string) string {
 	}
 	if flutter.IsFlutterApp(dir) {
 		return "Flutter"
+	}
+	if capacitor.IsCapacitorApp(dir) {
+		return "Capacitor"
 	}
 	if xamarin.IsXamarinApp(dir) {
 		return "Xamarin"
