@@ -1,2 +1,4 @@
 scan
 .DS_Store
+
+.direnv
