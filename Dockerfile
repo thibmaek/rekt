@@ -1,5 +1,5 @@
 # Build rekt-cli binary
-FROM golang:1.22 AS builder
+FROM golang:1.25 AS builder
 
 ARG REKT_CLI_VERSION=1.1.0-alpha
 
@@ -9,21 +9,19 @@ COPY Makefile .
 RUN go build -ldflags="-X 'main.Version=${REKT_CLI_VERSION}'" -o rekt .
 
 # Install jadx & hermes toolchain
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:17-jre
 
 LABEL description="Rekt is app rekking tool for mobile applications"
 LABEL repository="https://github.com/thibmaek/rekt"
 LABEL maintainer="thibmaek"
 
-ARG JADX_VERSION=1.4.7
+ARG JADX_VERSION=1.5.3
 
 RUN apt update -y && \
     apt install -y curl git file python3 python3-pip unzip && \
     rm -rf /var/lib/apt/lists/*
 RUN ln -s /usr/bin/python3 /usr/bin/python
-RUN python -m pip install --upgrade pip
-
-RUN pip install --upgrade git+https://github.com/P1sec/hermes-dec
+RUN pip install --break-system-packages --upgrade git+https://github.com/P1sec/hermes-dec
 
 RUN mkdir -p /opt/jadx && \
     curl -L https://github.com/skylot/jadx/releases/download/v${JADX_VERSION}/jadx-${JADX_VERSION}.zip -o /opt/jadx/jadx-${JADX_VERSION}.zip && \
